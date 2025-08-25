@@ -62,17 +62,17 @@ $stmt = $db->prepare('
         CASE 
             WHEN at.id = 1 THEN maa.loan_opening_balance
             WHEN at.id = 2 THEN maa.savings_opening_balance
-            WHEN at.id = 3 THEN maa.seasonal_tickets_opening_balance
             WHEN at.id = 4 THEN maa.operations_opening_balance
             WHEN at.id = 6 THEN maa.insurance_opening_balance
+            WHEN at.id = 7 THEN maa.county_opening_balance
             ELSE 0
         END as initial_balance,
         CASE 
             WHEN at.id = 1 THEN maa.loan_current_balance
             WHEN at.id = 2 THEN maa.savings_current_balance
-            WHEN at.id = 3 THEN maa.seasonal_tickets_current_balance
             WHEN at.id = 4 THEN maa.operations_current_balance
             WHEN at.id = 6 THEN maa.insurance_current_balance
+            WHEN at.id = 7 THEN maa.county_current_balance
             ELSE 0
         END as current_balance
     FROM member_account_types ma 

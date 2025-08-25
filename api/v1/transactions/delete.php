@@ -37,9 +37,9 @@ try {
     $balance_columns = [
         1 => 'loan_current_balance',
         2 => 'savings_current_balance',
-        3 => 'seasonal_tickets_current_balance',
         4 => 'operations_current_balance',
-        6 => 'insurance_current_balance'
+        6 => 'insurance_current_balance',
+        7 => 'county_current_balance'
     ];
 
     $account_type_id = $row['account_type_id'];
