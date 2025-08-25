@@ -45,7 +45,6 @@ foreach ($data->member_ids as $member_id) {
             $AT = new AfricasTalking($username, $apiKey);
             $smsService = $AT->sms();
             $success = false;
-            $cost = 0.0;
             try {
                 $now = date('d-m-Y H:i');
                 $message_with_time = $data->message . " [$now]";
@@ -54,10 +53,13 @@ foreach ($data->member_ids as $member_id) {
                     'message' => $message_with_time,
                     'from'    => 'iGuru'
                 ]);
-                if (isset($result->data->SMSMessageData->Recipients[0]->status) &&
-                    $result->data->SMSMessageData->Recipients[0]->status === 'Success') {
+                // --- Robust Success Check (Handles Array/Object from SDK) ---
+                $result_array = json_decode(json_encode($result), true);
+                $is_status_ok = isset($result_array['status']) && $result_array['status'] === 'success';
+                $is_recipient_ok = isset($result_array['data']['SMSMessageData']['Recipients'][0]['statusCode']) && in_array($result_array['data']['SMSMessageData']['Recipients'][0]['statusCode'], [100, 101, 102]);
+
+                if ($is_status_ok && $is_recipient_ok) {
                     $success = true;
-                    $cost = $result->data->SMSMessageData->Recipients[0]->cost ?? 0.0;
                 }
             } catch (Exception $e) {
                 $success = false;
