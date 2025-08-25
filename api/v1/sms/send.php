@@ -68,13 +68,14 @@ foreach ($data->member_ids as $member_id) {
                 $sms->sent_date = date('Y-m-d');
                 $sms->sent_time = date('H:i:s');
                 $sms->sent_status = 1;
-                $sms->cost = $cost;
                 $sms->sent_from = 'iGuru';
                 $sms->package_id = '';
                 $sms->af_cost = 0;
                 $sms->sms_characters = strlen($data->message);
-                $sms->pages = 1;
+                // Calculate pages based on message length, not hardcoded 1
+                $sms->pages = ceil(strlen($data->message) / 160); 
                 $sms->page_cost = 0.80;
+                $sms->cost = $sms->pages * $sms->page_cost; // Calculate total cost based on pages and page_cost
                 $sms->create();
                 $results[] = [
                     'member_id' => $member_id,

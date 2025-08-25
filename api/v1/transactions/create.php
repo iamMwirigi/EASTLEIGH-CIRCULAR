@@ -326,13 +326,13 @@ if ($row) {
                     $smsLog->sent_date = $row['transaction_date'];
                     $smsLog->sent_time = date('H:i:s');
                     $smsLog->sent_status = 1;
-                    $smsLog->cost = $cost;
                     $smsLog->sent_from = 'iGuru';
                     $smsLog->package_id = '';
                     $smsLog->af_cost = 0;
                     $smsLog->sms_characters = strlen($sms_message);
                     $smsLog->pages = ceil(strlen($sms_message) / 160);
                     $smsLog->page_cost = 0.80;
+                    $smsLog->cost = $smsLog->pages * $smsLog->page_cost; // Calculate total cost based on pages and page_cost
                     if ($smsLog->create()) {
                         $sms_debug_info['db_log'] = "SMS logged to database successfully.";
                     } else {
