@@ -52,7 +52,7 @@ foreach ($data->member_ids as $member_id) {
                 $result = $smsService->send([
                     'to'      => $sanitized_number,
                     'message' => $message_with_time,
-                    'from'    => 'DIX-HUIT'
+                    'from'    => 'iGuru'
                 ]);
                 if (isset($result->data->SMSMessageData->Recipients[0]->status) &&
                     $result->data->SMSMessageData->Recipients[0]->status === 'Success') {
@@ -69,7 +69,7 @@ foreach ($data->member_ids as $member_id) {
                 $sms->sent_time = date('H:i:s');
                 $sms->sent_status = 1;
                 $sms->cost = $cost;
-                $sms->sent_from = 'DIX-HUIT';
+                $sms->sent_from = 'iGuru';
                 $sms->package_id = '';
                 $sms->af_cost = 0;
                 $sms->sms_characters = strlen($data->message);

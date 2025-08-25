@@ -1,4 +1,4 @@
-# Dix-Huit Supreme Collections Management System
+# iGuru Collections Management System
 
 ## Overview
 A comprehensive collections management system for vehicle owners with integrated SMS notifications, member account management, and transaction tracking.
@@ -34,8 +34,8 @@ A comprehensive collections management system for vehicle owners with integrated
    - Validation: No negative values, at least one non-zero deduction
 
 2. **Receipt Generation**
-   - Auto-generates sequential receipt numbers (DIX-1, DIX-2, ...)
-   - Format: `DIX-{number}`
+   - Auto-generates sequential receipt numbers (IG-1, IG-2, ...)
+   - Format: `IG-{number}`
 
 3. **Amount Calculation**
    - Automatically calculates total from all deductions
@@ -66,7 +66,7 @@ A comprehensive collections management system for vehicle owners with integrated
      
      
      Thank you
-     DIX-HUIT SUPREME SHUTTLE LTD [29-07-2025 21:13]
+     iGuru [29-07-2025 21:13]
      ```
 
 ### Collection Listing
@@ -198,7 +198,7 @@ Content-Type: application/json
     "s_time": "21:11:55",
     "s_date": "2025-07-29",
     "client_side_id": "CLNT-68890eeb795b1",
-    "receipt_no": "DIX-225",
+    "receipt_no": "IG-225",
     "collected_by": "admin",
     "stage_name": "Thika",
     "delete_status": 0,
@@ -207,7 +207,7 @@ Content-Type: application/json
     "loans": 2000,
     "county": 1000,
     "total": 5000,
-    "company_name": "DIX-HUIT SUPREME SHUTTLE LTD",
+    "company_name": "iGuru",
     "company_contacts": "Management-0729690274,Komarock-0000000000, Eastleigh-0000000000"
   }
 }
@@ -237,7 +237,7 @@ Content-Type: application/json
       "amount": "5000.00",
       "loans": 2000,
       "county": 1000,
-      "company_name": "DIX-HUIT SUPREME SHUTTLE LTD",
+      "company_name": "iGuru",
       "company_contacts": "Management-0729690274,Komarock-0000000000, Eastleigh-0000000000"
     }
   ],
@@ -326,7 +326,7 @@ Content-Type: application/json
     "balances": {
       "savings_current_balance": 0,
       "loan_current_balance": 0,
-      "seasonal_tickets_current_balance": 0,
+      "county_current_balance": 0,
       "insurance_current_balance": 0,
       "operations_current_balance": 0
     }
@@ -361,7 +361,7 @@ Content-Type: application/json
     "balances": {
       "savings_current_balance": 769900,
       "loan_current_balance": -3700,
-      "seasonal_tickets_current_balance": 0,
+      "county_current_balance": 0,
       "insurance_current_balance": 0,
       "operations_current_balance": 0
     }
@@ -561,7 +561,7 @@ Content-Type: application/json
 ### AfricasTalking SDK
 - **Username**: mzigosms
 - **API Key**: Configured in environment
-- **From**: DIX-HUIT
+- **From**: iGuru
 - **Format**: Structured message with deductions and totals
 
 ### SMS Triggers

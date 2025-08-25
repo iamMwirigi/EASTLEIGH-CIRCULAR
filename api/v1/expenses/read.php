@@ -194,7 +194,7 @@ try {
     
     // Add company details and stage to each expense
     foreach ($expenses as &$expense) {
-        $expense['company_name'] = $company['name'] ?? 'DIX-HUIT SUPREME';
+        $expense['company_name'] = $company['name'] ?? 'iGuru';
         $expense['company_contacts'] = $company['contacts'] ?? '';
         
         // Get user's stage - handle case where user might not have a stage

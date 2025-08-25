@@ -85,12 +85,12 @@ if (array_sum($deductions) == 0) {
 }
 
 // Sequential receipt number generation: DIX-1, DIX-2, ...
-$receipt_prefix = 'DIX-';
+$receipt_prefix = 'IG-';
 $max_receipt_stmt = $db->prepare("SELECT receipt_no FROM new_transaction WHERE receipt_no LIKE '{$receipt_prefix}%'");
 $max_receipt_stmt->execute();
 $max_number = 0;
 while ($row = $max_receipt_stmt->fetch(PDO::FETCH_ASSOC)) {
-    if (preg_match('/^DIX-(\\d+)$/', $row['receipt_no'], $matches)) {
+    if (preg_match('/^IG-(\\d+)$/', $row['receipt_no'], $matches)) {
         $num = (int)$matches[1];
         if ($num > $max_number) $max_number = $num;
     }
@@ -289,7 +289,7 @@ if($stmt->execute()) {
     $org_stmt = $db->prepare('SELECT name FROM organization_details ORDER BY id ASC LIMIT 1');
     $org_stmt->execute();
     $org = $org_stmt->fetch(PDO::FETCH_ASSOC);
-    $company_name = $org ? $org['name'] : null;
+    $company_name = $org ? $org['name'] : 'iGuru';
     // Fetch attendant's phone number
     $user_stmt = $db->prepare('SELECT phone_number FROM _user_ WHERE id = ?');
     $user_stmt->execute([$userData->id]);
@@ -363,7 +363,7 @@ if($stmt->execute()) {
                 $result = $sms->send([
                     'to'      => $sanitized_number,
                     'message' => $sms_message,
-                    'from'    => 'DIX-HUIT'
+                    'from'    => 'iGuru'
                 ]);
 
                 // --- Robust Success Check (Handles Array/Object from SDK) ---
@@ -404,7 +404,7 @@ if($stmt->execute()) {
                 $smsLog->sent_time = date('H:i:s');
                 $smsLog->sent_status = 1;
                 $smsLog->cost = $cost;
-                $smsLog->sent_from = 'DIX-HUIT';
+                $smsLog->sent_from = 'iGuru';
                 $smsLog->package_id = '';
                 $smsLog->af_cost = 0;
                 $smsLog->sms_characters = strlen($sms_message);

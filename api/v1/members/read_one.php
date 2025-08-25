@@ -57,11 +57,11 @@ if($num > 0) {
         'number' => $number,
         'accounts' => $accounts,
         'balances' => $balances ? [
-            'savings_current_balance' => (float)$balances['savings_current_balance'],
-            'loan_current_balance' => (float)$balances['loan_current_balance'],
-            'seasonal_tickets_current_balance' => (float)$balances['seasonal_tickets_current_balance'],
-            'insurance_current_balance' => (float)$balances['insurance_current_balance'],
-            'operations_current_balance' => (float)$balances['operations_current_balance']
+            'savings_current_balance' => (float)($balances['savings_current_balance'] ?? 0),
+            'loan_current_balance' => (float)($balances['loan_current_balance'] ?? 0),
+            'county_current_balance' => (float)($balances['county_current_balance'] ?? 0),
+            'insurance_current_balance' => (float)($balances['insurance_current_balance'] ?? 0),
+            'operations_current_balance' => (float)($balances['operations_current_balance'] ?? 0)
         ] : null
     );
     

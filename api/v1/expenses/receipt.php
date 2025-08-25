@@ -161,7 +161,7 @@ try {
     $receipt[] = [
         "text_size" => "normal",
         "is_bold" => false,
-        "content" => $company['name'] ?? 'DIX-HUIT SUPREME',
+        "content" => $company['name'] ?? 'iGuru',
         "pre_text" => "Company: ",
         "end_1" => "\n"
     ];
@@ -190,7 +190,7 @@ try {
         "success" => true,
         "expense_id" => $expense['id'],
         "receipt" => $receipt,
-        "company_name" => $company['name'] ?? 'DIX-HUIT SUPREME',
+        "company_name" => $company['name'] ?? 'iGuru',
         "company_email" => $company['email'] ?? '',
         "served_by" => $userData->username
     ]);

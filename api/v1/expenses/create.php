@@ -98,7 +98,7 @@ try {
         $stage = $stage_stmt->fetch(PDO::FETCH_ASSOC);
         
         // Add company details and stage to the expense data
-        $expense['company_name'] = $company['name'] ?? 'DIX-HUIT SUPREME';
+        $expense['company_name'] = $company['name'] ?? 'iGuru';
         $expense['company_contacts'] = $company['contacts'] ?? '';
         $expense['stage'] = $stage['stage_name'] ?? 'UNKNOWN';
         

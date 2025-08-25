@@ -228,7 +228,7 @@ if ($row) {
             $org_stmt = $db->prepare('SELECT name FROM organization_details ORDER BY id ASC LIMIT 1');
             $org_stmt->execute();
             $org = $org_stmt->fetch(PDO::FETCH_ASSOC);
-            $company_name = $org ? $org['name'] : 'DIX-HUIT';
+            $company_name = $org ? $org['name'] : 'iGuru';
 
             $sms_message = "";
             $member_name = $row['member_name'];
@@ -286,7 +286,7 @@ if ($row) {
                     $result = $sms_service->send([
                         'to'      => $sanitized_number,
                         'message' => $sms_message,
-                        'from'    => 'DIX-HUIT'
+                        'from'    => 'iGuru'
                     ]);
 
                     // --- Robust Success Check (Handles Array/Object from SDK) ---
@@ -327,7 +327,7 @@ if ($row) {
                     $smsLog->sent_time = date('H:i:s');
                     $smsLog->sent_status = 1;
                     $smsLog->cost = $cost;
-                    $smsLog->sent_from = 'DIX-HUIT';
+                    $smsLog->sent_from = 'iGuru';
                     $smsLog->package_id = '';
                     $smsLog->af_cost = 0;
                     $smsLog->sms_characters = strlen($sms_message);
