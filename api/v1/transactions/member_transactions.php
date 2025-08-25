@@ -98,6 +98,13 @@ $member_stmt = $db->prepare('SELECT id, name, phone_number, number FROM member W
 $member_stmt->execute([$member_id]);
 $member = $member_stmt->fetch(PDO::FETCH_ASSOC);
 
+// Check if member exists
+if (!$member) {
+    http_response_code(404);
+    echo json_encode(['message' => 'Member not found with the provided ID.', 'response' => 'error']);
+    exit();
+}
+
 // Get account summary
 $account_summary_stmt = $db->prepare('
     SELECT 
