@@ -51,8 +51,8 @@ if ($data['transaction_type'] === 'transfer' && !isset($data['destination_accoun
 $balance_columns = [
     1 => 'loan_current_balance',      // Loans
     2 => 'savings_current_balance',   // Savings  
-    3 => 'seasonal_tickets_current_balance', // Seasonal Tickets
     4 => 'operations_current_balance', // Operations
+    7 => 'county_current_balance', // County
     6 => 'insurance_current_balance'   // Insurance
 ];
 
@@ -71,7 +71,7 @@ $current_balance = $balance_stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$current_balance) {
     // Auto-create member_accounts record if it doesn't exist
-    $create_account_stmt = $db->prepare('INSERT INTO member_accounts (member_id, savings_opening_balance, savings_current_balance, loan_opening_balance, loan_current_balance, seasonal_tickets_opening_balance, seasonal_tickets_current_balance, operations_opening_balance, operations_current_balance, insurance_opening_balance, insurance_current_balance) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)');
+    $create_account_stmt = $db->prepare('INSERT INTO member_accounts (member_id, savings_opening_balance, savings_current_balance, loan_opening_balance, loan_current_balance, county_opening_balance, county_current_balance, operations_opening_balance, operations_current_balance, insurance_opening_balance, insurance_current_balance) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)');
     $create_account_stmt->execute([$data['member_id']]);
     
     // Now get the balance again
@@ -217,8 +217,8 @@ if ($row) {
     $transaction_type = $row['transaction_type'];
     $owner_phone = $row['phone_number'] ?? null;
 
-    // Send for Loans (1), Savings (2), Seasonal Tickets (3), and Insurance (6)
-    $allowed_sms_accounts = [1, 2, 3, 6];
+    // Send for Loans (1), Savings (2), Insurance (6) and County (7)
+    $allowed_sms_accounts = [1, 2, 6, 7];
     if ($owner_phone && in_array($account_type_id, $allowed_sms_accounts)) {
         include_once __DIR__ . '/../../../models/Sms.php';
         $sanitized_number = Sms::sanitizeNumber($owner_phone);
@@ -260,11 +260,11 @@ if ($row) {
                 } elseif ($transaction_type === 'withdrawal') {
                     $sms_message = "Dear $member_name, your savings withdrawal of KES $amount_formatted has been processed. Your new savings balance is KES $balance_after_formatted. Thank you, $company_name.";
             }
-        } elseif ($account_type_id === 3) { // Seasonal Tickets Account
+        } elseif ($account_type_id === 7) { // County Account
             if ($transaction_type === 'deposit') {
-                $sms_message = "Dear $member_name, your Seasonal Ticket contribution of KES $amount_formatted has been received. Your new balance is KES $balance_after_formatted. Thank you, $company_name.";
+                $sms_message = "Dear $member_name, your County contribution of KES $amount_formatted has been received. Your new balance is KES $balance_after_formatted. Thank you, $company_name.";
             } elseif ($transaction_type === 'withdrawal') {
-                $sms_message = "Dear $member_name, your Seasonal Ticket withdrawal of KES $amount_formatted has been processed. Your new balance is KES $balance_after_formatted. Thank you, $company_name.";
+                $sms_message = "Dear $member_name, your County withdrawal of KES $amount_formatted has been processed. Your new balance is KES $balance_after_formatted. Thank you, $company_name.";
             }
         } elseif ($account_type_id === 6) { // Insurance Account
             if ($transaction_type === 'deposit') {

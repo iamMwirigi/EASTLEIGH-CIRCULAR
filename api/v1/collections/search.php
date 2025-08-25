@@ -77,7 +77,7 @@ foreach ($all_members as $m) {
         'totals' => [
             'operations' => 0,
             'loans' => 0,
-            'seasonal_tickets' => 0,
+            'county' => 0,
             'savings' => 0,
             'insurance' => 0,
             'grand_total_deductions' => 0
@@ -109,7 +109,7 @@ foreach ($results as $row) {
             'totals' => [
                 'operations' => 0,
                 'loans' => 0,
-                'seasonal_tickets' => 0,
+                'county' => 0,
                 'savings' => 0,
                 'insurance' => 0,
                 'grand_total_deductions' => 0
@@ -131,14 +131,14 @@ foreach ($results as $row) {
             'number_plate' => $number_plate,
             'operations' => 0,
             'loans' => 0,
-            'seasonal_tickets' => 0,
+            'county' => 0,
             'savings' => 0,
             'insurance' => 0,
             'total_deductions' => 0
         ];
     }
     // Sum up deductions for this transaction
-    $fields = ['operations','loans','seasonal_tickets','savings','insurance'];
+    $fields = ['operations','loans','county','savings','insurance'];
     $total = 0;
     foreach ($fields as $field) {
         $val = isset($row[$field]) ? (float)$row[$field] : 0;

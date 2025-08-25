@@ -27,11 +27,11 @@ $end_date = isset($data->end_date) ? $data->end_date : (isset($_GET['end_date'])
 $filter_type = isset($data->filter_type) ? $data->filter_type : (isset($_GET['filter_type']) ? $_GET['filter_type'] : null);
 
 // Valid filter types
-$valid_filter_types = ['operations', 'loans', 'seasonal_tickets', 'savings', 'insurance'];
+$valid_filter_types = ['operations', 'loans', 'county', 'savings', 'insurance'];
 
 try {
     // Deduction fields to include
-    $deduction_fields = ['operations', 'loans', 'seasonal_tickets', 'savings', 'insurance'];
+    $deduction_fields = ['operations', 'loans', 'county', 'savings', 'insurance'];
     
     // If filter_type is provided and valid, only include that field
     if ($filter_type && in_array($filter_type, $valid_filter_types)) {
@@ -132,7 +132,7 @@ try {
                 'stage_name' => $row['stage_name'],
                 'operations' => $row['operations'],
                 'loans' => $row['loans'],
-                'seasonal_tickets' => $row['seasonal_tickets'],
+                'county' => $row['county'],
                 'savings' => $row['savings'],
                 'insurance' => $row['insurance']
             ];
@@ -151,7 +151,7 @@ try {
     $stage_query = 'SELECT stage_name, collected_by, '
         . 'SUM(operations) as operations, '
         . 'SUM(loans) as loans, '
-        . 'SUM(seasonal_tickets) as seasonal_tickets, '
+        . 'SUM(county) as county, '
         . 'SUM(savings) as savings, '
         . 'SUM(insurance) as insurance '
         . 'FROM new_transaction WHERE 1=1';

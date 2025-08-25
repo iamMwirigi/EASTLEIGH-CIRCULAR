@@ -42,7 +42,7 @@ if ($member_id) {
         exit();
     }
     
-    $insert_stmt = $db->prepare('INSERT INTO member_accounts (member_id, savings_opening_balance, savings_current_balance, loan_opening_balance, loan_current_balance, seasonal_tickets_opening_balance, seasonal_tickets_current_balance, operations_opening_balance, operations_current_balance) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0)');
+    $insert_stmt = $db->prepare('INSERT INTO member_accounts (member_id, savings_opening_balance, savings_current_balance, loan_opening_balance, loan_current_balance, county_opening_balance, county_current_balance, operations_opening_balance, operations_current_balance) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0)');
     $insert_stmt->execute([$member_id]);
     
     http_response_code(201);
@@ -64,7 +64,7 @@ if ($member_id) {
     
     $count = 0;
     foreach ($members as $member) {
-        $insert_stmt = $db->prepare('INSERT INTO member_accounts (member_id, savings_opening_balance, savings_current_balance, loan_opening_balance, loan_current_balance, seasonal_tickets_opening_balance, seasonal_tickets_current_balance, operations_opening_balance, operations_current_balance) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0)');
+        $insert_stmt = $db->prepare('INSERT INTO member_accounts (member_id, savings_opening_balance, savings_current_balance, loan_opening_balance, loan_current_balance, county_opening_balance, county_current_balance, operations_opening_balance, operations_current_balance) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0)');
         $insert_stmt->execute([$member['id']]);
         $count++;
     }

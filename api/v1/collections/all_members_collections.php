@@ -27,7 +27,7 @@ $member_stmt = $db->prepare($member_query);
 $member_stmt->execute();
 $members = $member_stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$deduction_fields = ['operations', 'loans', 'seasonal_tickets', 'savings', 'insurance'];
+$deduction_fields = ['operations', 'loans', 'county', 'savings', 'insurance'];mysql>
 $results = [];
 
 foreach ($members as $member) {

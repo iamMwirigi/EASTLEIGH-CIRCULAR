@@ -30,7 +30,7 @@ A comprehensive collections management system for vehicle owners with integrated
 1. **Input Validation**
    - Required: `number_plate`, `t_time`, `t_date`
    - Optional: `for_date`, `stage_id`
-   - Deductions: `operations`, `loans`, `seasonal_tickets`, `savings`, `insurance`
+   - Deductions: `operations`, `loans`, `county`, `savings`, `insurance`
    - Validation: No negative values, at least one non-zero deduction
 
 2. **Receipt Generation**
@@ -39,7 +39,7 @@ A comprehensive collections management system for vehicle owners with integrated
 
 3. **Amount Calculation**
    - Automatically calculates total from all deductions
-   - Formula: `amount = operations + loans + seasonal_tickets + savings + insurance`
+   - Formula: `amount = operations + loans + county + savings + insurance`
    - Never null (0 if no deductions)
 
 4. **Member Account Updates**
@@ -49,7 +49,7 @@ A comprehensive collections management system for vehicle owners with integrated
      ```sql
      savings_current_balance += savings_deduction
      loan_current_balance += loans_deduction
-     seasonal_tickets_current_balance += seasonal_tickets_deduction
+     county_current_balance += county_deduction
      insurance_current_balance += insurance_deduction
      ```
 
@@ -59,7 +59,7 @@ A comprehensive collections management system for vehicle owners with integrated
      ```
      KFA 123A
      Loans: Ksh 2000
-     Tickets: Ksh 1000
+     County: Ksh 1000
      Savings: Ksh 1500
      Insurance: Ksh 500
      Total: Ksh 5000
@@ -87,9 +87,9 @@ A comprehensive collections management system for vehicle owners with integrated
 ### Account Types
 1. **Loans** (ID: 1): Loan balances and payments
 2. **Savings** (ID: 2): Savings account balances
-3. **Seasonal Tickets** (ID: 3): Ticket contributions
-4. **Operations** (ID: 4): Operational deductions
-5. **Insurance** (ID: 6): Insurance contributions
+3. **Operations** (ID: 4): Operational deductions
+4. **Insurance** (ID: 6): Insurance contributions
+5. **County** (ID: 7): county fees collection
 
 ### Balance Management
 - **Auto-Creation**: Member accounts created automatically when needed
@@ -176,7 +176,7 @@ Content-Type: application/json
   "for_date": "2025-07-22",
   "loans": 2000,
   "savings": 1500,
-  "seasonal_tickets": 1000,
+  "county": 1000,
   "insurance": 500,
   "operations": 300,
   "stage_id": 1
@@ -205,7 +205,7 @@ Content-Type: application/json
     "for_date": "2025-07-22",
     "amount": "5000.00",
     "loans": 2000,
-    "seasonal_tickets": 1000,
+    "county": 1000,
     "total": 5000,
     "company_name": "DIX-HUIT SUPREME SHUTTLE LTD",
     "company_contacts": "Management-0729690274,Komarock-0000000000, Eastleigh-0000000000"
@@ -236,7 +236,7 @@ Content-Type: application/json
       "t_date": "2025-07-22",
       "amount": "5000.00",
       "loans": 2000,
-      "seasonal_tickets": 1000,
+      "county": 1000,
       "company_name": "DIX-HUIT SUPREME SHUTTLE LTD",
       "company_contacts": "Management-0729690274,Komarock-0000000000, Eastleigh-0000000000"
     }
@@ -244,7 +244,7 @@ Content-Type: application/json
   "summary": {
     "total_operations": 300,
     "total_loans": 2000,
-    "total_seasonal_tickets": 1000,
+    "total_county": 1000,
     "total_savings": 1500,
     "total_insurance": 500,
     "total_amount": 5000,
@@ -265,7 +265,7 @@ Content-Type: application/json
   "t_date": "2025-07-22",
   "loans": 2500,
   "savings": 2000,
-  "seasonal_tickets": 1200,
+  "county": 1200,
   "insurance": 600
 }
 ```

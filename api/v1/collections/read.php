@@ -150,7 +150,7 @@ if ($userData->role === 'member') {
                 'for_date' => $start_date ?? $today,
                 'operations' => $operations_paid,
                 'loans' => 0,
-                'seasonal_tickets' => 0,
+                'county' => 0,
                 'savings' => 0,
                 'insurance' => 0,
                 'amount' => $operations_paid,
@@ -226,7 +226,7 @@ if($num > 0) {
     $totals = [
         'total_operations' => 0,
         'total_loans' => 0,
-        'total_seasonal_tickets' => 0,
+        'total_county' => 0,
         'total_savings' => 0,
         'total_insurance' => 0,
         'total_amount' => 0,
@@ -234,7 +234,7 @@ if($num > 0) {
     ];
 
     $filtered_rows = [];
-    $deduction_fields = ['operations', 'loans', 'seasonal_tickets', 'savings', 'insurance'];
+    $deduction_fields = ['operations', 'loans', 'county', 'savings', 'insurance'];
 
     foreach ($source_data as $row) {
         // Ensure all deduction fields are present and are numeric (int for whole numbers)
@@ -257,7 +257,7 @@ if($num > 0) {
             $account_amount = (float)($row[$account_type] ?? 0);
             
             // Remove other account type fields from the response
-            $account_types = ['operations', 'loans', 'seasonal_tickets', 'savings', 'insurance'];
+            $account_types = ['operations', 'loans', 'county', 'savings', 'insurance'];
             foreach ($deduction_fields as $type) {
                 if ($type !== $account_type) {
                     unset($row[$type]);
@@ -298,7 +298,7 @@ if($num > 0) {
             // Count all account types if no filtering
             $totals['total_operations'] += (float)($row['operations'] ?? 0);
             $totals['total_loans'] += (float)($row['loans'] ?? 0);
-            $totals['total_seasonal_tickets'] += (float)($row['seasonal_tickets'] ?? 0);
+            $totals['total_county'] += (float)($row['county'] ?? 0);
             $totals['total_savings'] += (float)($row['savings'] ?? 0);
             $totals['total_insurance'] += (float)($row['insurance'] ?? 0);
             $totals['total_amount'] += (float)($row['amount'] ?? 0);

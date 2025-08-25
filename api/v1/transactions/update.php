@@ -51,9 +51,9 @@ if (isset($data['transaction_type']) && $data['transaction_type'] === 'transfer'
 $balance_columns = [
     1 => 'loan_current_balance',      // Loans
     2 => 'savings_current_balance',   // Savings  
-    3 => 'seasonal_tickets_current_balance', // Seasonal Tickets
     4 => 'operations_current_balance', // Operations
-    6 => 'insurance_current_balance'   // Insurance
+    6 => 'insurance_current_balance',   // Insurance
+    7 => 'county_current_balance' // County
 ];
 
 // Get the current transaction to revert its effect
@@ -82,7 +82,7 @@ $current_balance = $balance_stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$current_balance) {
     // Auto-create member_accounts record if it doesn't exist
-    $create_account_stmt = $db->prepare('INSERT INTO member_accounts (member_id, savings_opening_balance, savings_current_balance, loan_opening_balance, loan_current_balance, seasonal_tickets_opening_balance, seasonal_tickets_current_balance, operations_opening_balance, operations_current_balance, insurance_opening_balance, insurance_current_balance) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)');
+    $create_account_stmt = $db->prepare('INSERT INTO member_accounts (member_id, savings_opening_balance, savings_current_balance, loan_opening_balance, loan_current_balance, county_opening_balance, county_current_balance, operations_opening_balance, operations_current_balance, insurance_opening_balance, insurance_current_balance) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)');
     $create_account_stmt->execute([$current_transaction['member_id']]);
     
     // Now get the balance again

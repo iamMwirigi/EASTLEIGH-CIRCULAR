@@ -70,7 +70,7 @@ if($num > 0) {
         'amount' => $amount,
         'operations' => isset($row['operations']) ? $row['operations'] : null,
         'loans' => isset($row['loans']) ? $row['loans'] : null,
-        'seasonal_tickets' => isset($row['seasonal_tickets']) ? $row['seasonal_tickets'] : null
+        'county' => isset($row['county']) ? $row['county'] : null
     );
     
     echo json_encode([

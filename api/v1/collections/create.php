@@ -66,7 +66,7 @@ foreach ($required_fields as $field) {
 $deductions = [
     'operations' => isset($data['operations']) ? (float)$data['operations'] : 0,
     'loans' => isset($data['loans']) ? (float)$data['loans'] : 0,
-    'seasonal_tickets' => isset($data['seasonal_tickets']) ? (float)$data['seasonal_tickets'] : 0,
+    'county' => isset($data['county']) ? (float)$data['county'] : 0,
     'savings' => isset($data['savings']) ? (float)$data['savings'] : 0,
     'insurance' => isset($data['insurance']) ? (float)$data['insurance'] : 0
 ];
@@ -121,11 +121,11 @@ if (!$stage_name) {
 }
 
 $query = 'INSERT INTO new_transaction (
-    number_plate, operations, loans, seasonal_tickets, savings, insurance,
+    number_plate, operations, loans, county, savings, insurance,
     t_time, t_date, collected_by, stage_name, amount,
     s_time, s_date, client_side_id, receipt_no, delete_status, for_date
 ) VALUES (
-    :number_plate, :operations, :loans, :seasonal_tickets, :savings, :insurance,
+    :number_plate, :operations, :loans, :county, :savings, :insurance,
     :t_time, :t_date, :collected_by, :stage_name, :amount,
     :s_time, :s_date, :client_side_id, :receipt_no, :delete_status, :for_date
 )';
@@ -153,7 +153,7 @@ $stmt->bindParam(':collected_by', $collected_by);
 $stmt->bindParam(':stage_name', $stage_name);
 // Calculate amount as the sum of all deduction fields
 $amount = 0;
-foreach (['operations', 'loans', 'seasonal_tickets', 'savings', 'insurance'] as $ded_field) {
+foreach (['operations', 'loans', 'county', 'savings', 'insurance'] as $ded_field) {
     $amount += isset($deductions[$ded_field]) ? (float)$deductions[$ded_field] : 0;
 }
 // When binding amount, always use the calculated value
@@ -166,7 +166,7 @@ $stmt->bindValue(':delete_status', $data['delete_status'] ?? 0);
 $stmt->bindValue(':for_date', $data['for_date'] ?? null);
 $stmt->bindValue(':operations', $deductions['operations']);
 $stmt->bindValue(':loans', $deductions['loans']);
-$stmt->bindValue(':seasonal_tickets', $deductions['seasonal_tickets']);
+$stmt->bindValue(':county', $deductions['county']);
 
 if($stmt->execute()) {
     $last_id = $db->lastInsertId();
@@ -187,7 +187,7 @@ if($stmt->execute()) {
             
             if (!$member_accounts) {
                 // Create member_accounts record if it doesn't exist
-                $create_account_stmt = $db->prepare('INSERT INTO member_accounts (member_id, savings_opening_balance, savings_current_balance, loan_opening_balance, loan_current_balance, seasonal_tickets_opening_balance, seasonal_tickets_current_balance, operations_opening_balance, operations_current_balance, insurance_opening_balance, insurance_current_balance) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)');
+                $create_account_stmt = $db->prepare('INSERT INTO member_accounts (member_id, savings_opening_balance, savings_current_balance, loan_opening_balance, loan_current_balance, county_opening_balance, county_current_balance, operations_opening_balance, operations_current_balance, insurance_opening_balance, insurance_current_balance) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)');
                 $create_account_stmt->execute([$member_id]);
                 $member_accounts_stmt->execute([$member_id]);
                 $member_accounts = $member_accounts_stmt->fetch(PDO::FETCH_ASSOC);
@@ -197,18 +197,18 @@ if($stmt->execute()) {
                 // Calculate new balances
                 $new_savings = (float)$member_accounts['savings_current_balance'] + (float)($deductions['savings'] ?? 0);
                 $new_loans = (float)$member_accounts['loan_current_balance'] + (float)($deductions['loans'] ?? 0);
-                $new_seasonal_tickets = (float)$member_accounts['seasonal_tickets_current_balance'] + (float)($deductions['seasonal_tickets'] ?? 0);
+                $new_county = (float)$member_accounts['county_current_balance'] + (float)($deductions['county'] ?? 0);
                 $new_insurance = (float)$member_accounts['insurance_current_balance'] + (float)($deductions['insurance'] ?? 0);
                 
                 // Update member_accounts
-                $update_stmt = $db->prepare('UPDATE member_accounts SET savings_current_balance = ?, loan_current_balance = ?, seasonal_tickets_current_balance = ?, insurance_current_balance = ? WHERE member_id = ?');
-                $update_stmt->execute([$new_savings, $new_loans, $new_seasonal_tickets, $new_insurance, $member_id]);
+                $update_stmt = $db->prepare('UPDATE member_accounts SET savings_current_balance = ?, loan_current_balance = ?, county_current_balance = ?, insurance_current_balance = ? WHERE member_id = ?');
+                $update_stmt->execute([$new_savings, $new_loans, $new_county, $new_insurance, $member_id]);
                 
                 // Create transaction records for each deduction type
                 $account_type_map = [
                     'savings' => 2, // Savings account type ID
                     'loans' => 1,   // Loans account type ID
-                    'seasonal_tickets' => 3, // Seasonal Tickets account type ID
+                    'county' => 7, // County account type ID
                     'insurance' => 6 // Insurance account type ID
                 ];
                 
@@ -225,8 +225,8 @@ if($stmt->execute()) {
                             case 'loans':
                                 $balance_before = (float)$member_accounts['loan_current_balance'];
                                 break;
-                            case 'seasonal_tickets':
-                                $balance_before = (float)$member_accounts['seasonal_tickets_current_balance'];
+                            case 'county':
+                                $balance_before = (float)$member_accounts['county_current_balance'];
                                 break;
                             case 'insurance':
                                 $balance_before = (float)$member_accounts['insurance_current_balance'];
@@ -275,12 +275,12 @@ if($stmt->execute()) {
     }
     // Add total to the collection array
     $total = 0;
-    foreach (['loans', 'seasonal_tickets', 'savings', 'insurance'] as $ded_field) {
+    foreach (['loans', 'county', 'savings', 'insurance'] as $ded_field) {
         $total += isset($deductions[$ded_field]) ? (float)$deductions[$ded_field] : 0;
     }
     $collection['total'] = $total;
     // Remove deduction fields with a value of zero from the response
-    foreach (['operations', 'loans', 'seasonal_tickets', 'savings', 'insurance'] as $ded_field) {
+    foreach (['operations', 'loans', 'county', 'savings', 'insurance'] as $ded_field) {
         if (isset($collection[$ded_field]) && (float)$collection[$ded_field] == 0) {
             unset($collection[$ded_field]);
         }
@@ -314,13 +314,13 @@ if($stmt->execute()) {
     $send_sms = false;
     $sms_deduction_fields = [
         'loans',
-        'tickets', // will be set below if present
+        'county', // will be set below if present
         'savings',
         'insurance'
     ];
-    // Check for tickets/seasonal_tickets
-    $tickets_val = isset($collection['seasonal_tickets']) ? (float)$collection['seasonal_tickets'] : 0;
-    if ((float)($collection['loans'] ?? 0) > 0 || $tickets_val > 0 || (float)($collection['savings'] ?? 0) > 0 || (float)($collection['insurance'] ?? 0) > 0) {
+    // Check for county
+    $county_val = isset($collection['county']) ? (float)$collection['county'] : 0;
+    if ((float)($collection['loans'] ?? 0) > 0 || $county_val > 0 || (float)($collection['savings'] ?? 0) > 0 || (float)($collection['insurance'] ?? 0) > 0) {
         $send_sms = true;
     }
     if ($owner_phone && $send_sms) {
@@ -332,7 +332,7 @@ if($stmt->execute()) {
             $deductions_list = [];
             foreach ([
                 'loans' => 'Loans',
-                'seasonal_tickets' => 'Tickets',
+                'county' => 'County',
                 'savings' => 'Savings',
                 'insurance' => 'Insurance'
             ] as $ded_field => $ded_label) {

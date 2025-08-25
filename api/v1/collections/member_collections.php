@@ -40,7 +40,7 @@ if (empty($vehicles)) {
 }
 
 // Prepare for per-vehicle and overall totals
-$deduction_fields = ['operations', 'loans', 'seasonal_tickets', 'savings', 'insurance'];
+$deduction_fields = ['operations', 'loans', 'county', 'savings', 'insurance'];
 $per_vehicle = [];
 $overall_totals = array_fill_keys($deduction_fields, 0);
 $overall_totals['grand_total_deductions'] = 0;
