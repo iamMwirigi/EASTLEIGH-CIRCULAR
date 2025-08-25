@@ -294,7 +294,7 @@ if ($row) {
 
                     $sms_debug_info['api_response'] = $result_array;
                     $is_status_ok = isset($result_array['status']) && $result_array['status'] === 'success';
-                    $is_recipient_ok = isset($result_array['data']['SMSMessageData']['Recipients'][0]['statusCode']) && $result_array['data']['SMSMessageData']['Recipients'][0]['statusCode'] == 100;
+                    $is_recipient_ok = isset($result_array['data']['SMSMessageData']['Recipients'][0]['statusCode']) && in_array($result_array['data']['SMSMessageData']['Recipients'][0]['statusCode'], [100, 101, 102]);
 
                     $sms_debug_info['check_api_status'] = [
                         'is_ok' => $is_status_ok,
