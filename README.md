@@ -57,16 +57,17 @@ A comprehensive collections management system for vehicle owners with integrated
    - Only sends if deductions > 0 (excludes operations)
    - Format:
      ```
+     iGuru
+
      KFA 123A
      Loans: Ksh 2000
      County: Ksh 1000
      Savings: Ksh 1500
      Insurance: Ksh 500
      Total: Ksh 5000
-     
-     
+     Date: [29-07-2025 21:13]
+
      Thank you
-     iGuru [29-07-2025 21:13]
      ```
 
 ### Collection Listing
@@ -281,7 +282,7 @@ Content-Type: application/json
     "amount": "6300.00",
     "loans": 2500,
     "savings": 2000,
-    "seasonal_tickets": 1200,
+    "county": 1200,
     "insurance": 600
   }
 }
@@ -298,7 +299,7 @@ Content-Type: application/json
   "name": "John Doe",
   "phone_number": "0712345678",
   "number": 12345,
-  "accounts": [1, 2, 3]
+  "accounts": [1, 2, 7]
 }
 ```
 

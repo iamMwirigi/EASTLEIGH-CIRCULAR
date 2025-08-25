@@ -342,15 +342,14 @@ if($stmt->execute()) {
                 }
             }
             $deductions_str = empty($deductions_list) ? '' : (implode("\n", $deductions_list) . "\n");
+            $now = date('d-m-Y H:i');
             $sms_message =
+                "$company_name\n\n" .
                 "{$collection['number_plate']}\n" .
                 $deductions_str .
                 "Total: Ksh {$collection['total']}\n" .
-                "\n\n" . // Two blank lines
-                "Thank you\n" .
-                "$company_name";
-            $now = date('d-m-Y H:i');
-            $sms_message .= " [$now]";
+                "Date: [$now]\n\n" .
+                "Thank you";
             // Use Africa's Talking SDK
             $username = "mzigosms";
             $apiKey = "91e59dfce79a61c35f3904acb2c71c27aeeef34f847f940fafb4c29674f8805c";
