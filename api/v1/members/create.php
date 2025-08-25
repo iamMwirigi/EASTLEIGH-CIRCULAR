@@ -45,7 +45,7 @@ if($stmt->execute()) {
     $member_id = $db->lastInsertId();
     
     // Create member_accounts record with default balances
-    $member_accounts_stmt = $db->prepare('INSERT INTO member_accounts (member_id, savings_opening_balance, savings_current_balance, loan_opening_balance, loan_current_balance, seasonal_tickets_opening_balance, seasonal_tickets_current_balance, operations_opening_balance, operations_current_balance, insurance_opening_balance, insurance_current_balance) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)');
+    $member_accounts_stmt = $db->prepare('INSERT INTO member_accounts (member_id, savings_opening_balance, savings_current_balance, loan_opening_balance, loan_current_balance, county_opening_balance, county_current_balance, operations_opening_balance, operations_current_balance, insurance_opening_balance, insurance_current_balance) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)');
     $member_accounts_stmt->execute([$member_id]);
     
     // Handle accounts if provided
