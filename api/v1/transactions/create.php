@@ -332,7 +332,7 @@ if ($row) {
                     $smsLog->sms_characters = strlen($sms_message);
                     $smsLog->pages = ceil(strlen($sms_message) / 160);
                     $smsLog->page_cost = 0.80;
-                    $smsLog->cost = $smsLog->pages * $smsLog->page_cost; // Calculate total cost based on pages and page_cost
+                    $smsLog->cost = 0.80; // Flat rate cost per message
                     if ($smsLog->create()) {
                         $sms_debug_info['db_log'] = "SMS logged to database successfully.";
                     } else {

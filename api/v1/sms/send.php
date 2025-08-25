@@ -45,6 +45,9 @@ foreach ($data->member_ids as $member_id) {
             $AT = new AfricasTalking($username, $apiKey);
             $smsService = $AT->sms();
             $success = false;
+            
+            // Set timezone to Nairobi for accurate timestamps
+            date_default_timezone_set('Africa/Nairobi');
             try {
                 $now = date('d-m-Y H:i');
                 $message_with_time = $data->message . " [$now]";
@@ -73,11 +76,11 @@ foreach ($data->member_ids as $member_id) {
                 $sms->sent_from = 'iGuru';
                 $sms->package_id = '';
                 $sms->af_cost = 0;
-                $sms->sms_characters = strlen($data->message);
-                // Calculate pages based on message length, not hardcoded 1
-                $sms->pages = ceil(strlen($data->message) / 160); 
+                // Calculate characters and pages based on the full message sent, including the timestamp
+                $sms->sms_characters = strlen($message_with_time);
+                $sms->pages = ceil($sms->sms_characters / 160); 
                 $sms->page_cost = 0.80;
-                $sms->cost = $sms->pages * $sms->page_cost; // Calculate total cost based on pages and page_cost
+                $sms->cost = 0.80; // Flat rate cost per message
                 $sms->create();
                 $results[] = [
                     'member_id' => $member_id,
